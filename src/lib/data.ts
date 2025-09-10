@@ -26,11 +26,4 @@ export const transactions: Transaction[] = [
   { id: '14', date: '2024-07-22', amount: 400.00, description: 'Over-budget grocery haul', categoryId: 'food' },
 ];
 
-export const budgets: Budget[] = [
-  { categoryId: 'food', amount: 400 },
-  { categoryId: 'travel', amount: 500 },
-  { categoryId: 'bills', amount: 200 },
-  { categoryId: 'shopping', amount: 300 },
-  { categoryId: 'entertainment', amount: 100 },
-  { categoryId: 'health', amount: 100 },
-];
+export const budgets: Budget[] = [];

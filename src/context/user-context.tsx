@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import type { User, Transaction, Budget } from '@/lib/types';
-import { categories, budgets as defaultBudgets } from '@/lib/data';
+import { categories } from '@/lib/data';
 
 type UserContextType = {
   user: User | null;
@@ -22,6 +22,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   const [user, setUser] = useState<User | null>(null);
   const [transactions, setTransactions] = useState<Transaction[]>([]);
   const [budgets, setBudgets] = useState<Budget[]>([]);
+  const defaultBudgets = categories.map(c => ({ categoryId: c.id, amount: 0 }));
+
 
   useEffect(() => {
     // Load user from localStorage on initial load
@@ -56,6 +58,8 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const logout = () => {
+    if(!user) return;
+    saveUserData(user.email, transactions, budgets); // Save before logging out
     setUser(null);
     setTransactions([]);
     setBudgets([]);
