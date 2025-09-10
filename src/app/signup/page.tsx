@@ -48,13 +48,15 @@ export default function SignupPage() {
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
-       <div className="hidden bg-background lg:flex items-center justify-center p-8">
-        <img
-            src="/dashboard.png"
-            alt="PennyPincher365 Dashboard"
-            className="w-full h-auto rounded-lg shadow-2xl object-contain"
-            data-ai-hint="dashboard analytics"
-        />
+       <div
+        className="hidden bg-background lg:block"
+        style={{
+          backgroundImage: "url(/dashboard.png)",
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+          backgroundRepeat: 'no-repeat',
+        }}
+      >
       </div>
       <div className="flex items-center justify-center py-12">
         <Card className="w-full max-w-sm">
