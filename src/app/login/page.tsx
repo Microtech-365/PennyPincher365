@@ -17,7 +17,6 @@ import React from "react";
 import { useUser } from "@/context/user-context";
 import { useToast } from "@/hooks/use-toast";
 import { CircleDollarSign } from "lucide-react";
-import Image from "next/image";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -44,7 +43,7 @@ export default function LoginPage() {
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
       <div className="hidden bg-background lg:flex items-center justify-center p-8">
-        <Image
+        <img
             src="/dashboard.png"
             alt="PennyPincher365 Dashboard"
             width={1280}
