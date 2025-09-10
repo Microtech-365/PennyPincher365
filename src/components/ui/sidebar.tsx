@@ -542,8 +542,10 @@ const SidebarMenuButton = React.forwardRef<
         className={cn(sidebarMenuButtonVariants({ variant, size }), className)}
         {...props}
       >
-        {Icon && <Icon />}
-        <span>{children}</span>
+        <>
+            {Icon && <Icon />}
+            <span>{children}</span>
+        </>
       </Comp>
     )
 
