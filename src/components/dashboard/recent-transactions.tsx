@@ -25,6 +25,7 @@ import Link from 'next/link';
 import { useState } from 'react';
 import { TransactionSheet } from '../transactions/transaction-sheet';
 import { DeleteTransactionDialog } from '../transactions/delete-transaction-dialog';
+import { useUser } from '@/context/user-context';
 
 type RecentTransactionsProps = {
   transactions: Transaction[];
@@ -33,6 +34,7 @@ type RecentTransactionsProps = {
 };
 
 export function RecentTransactions({ transactions: initialTransactions, categories, showViewAll = false }: RecentTransactionsProps) {
+  const { addTransaction, updateTransaction, deleteTransaction } = useUser();
   const [transactions, setTransactions] = useState(initialTransactions);
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
@@ -54,32 +56,26 @@ export function RecentTransactions({ transactions: initialTransactions, categori
   
   const confirmDelete = () => {
     if (!selectedTransaction) return;
-    setTransactions(prev => prev.filter(t => t.id !== selectedTransaction.id));
+    deleteTransaction(selectedTransaction.id);
     setIsDeleteDialogOpen(false);
     setSelectedTransaction(null);
   };
 
   const handleFormSubmit = (data: Omit<Transaction, 'id'>) => {
     if (isEditMode && selectedTransaction) {
-      setTransactions(prev => prev.map(t => t.id === selectedTransaction.id ? { ...t, ...data } : t));
+      updateTransaction({ ...selectedTransaction, ...data });
     } else {
-      const newTransaction: Transaction = {
-        id: (transactions.length + 1).toString(),
-        ...data
-      };
-      setTransactions(prev => [newTransaction, ...prev]);
+      addTransaction(data);
     }
     setIsSheetOpen(false);
     setSelectedTransaction(null);
   };
 
   const formatDate = (dateString: string) => {
-    //
     const date = new Date(dateString);
     const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
     return utcDate.toLocaleDateString();
   };
-
 
   return (
     <Card>
@@ -110,7 +106,7 @@ export function RecentTransactions({ transactions: initialTransactions, categori
             </TableRow>
           </TableHeader>
           <TableBody>
-            {transactions.map((transaction) => {
+            {initialTransactions.map((transaction) => {
               const category = categoryMap.get(transaction.categoryId);
               return (
                 <TableRow key={transaction.id}>

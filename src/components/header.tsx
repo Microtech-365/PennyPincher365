@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CircleUser, Menu, Package2, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn } from 'lucide-react';
+import { CircleUser, Menu, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn, PiggyBank } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,6 +19,7 @@ import { useUser } from '@/context/user-context';
 const navLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/transactions", label: "Transactions", icon: CreditCard },
+    { href: "/budgets", label: "Budgets", icon: PiggyBank }
 ];
 
 export function Header() {
@@ -38,10 +39,10 @@ export function Header() {
           href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <Package2 className="h-6 w-6 text-primary" />
-          <span className="sr-only">PennyPincher</span>
+          <PiggyBank className="h-6 w-6 text-primary" />
+          <span className="sr-only">PennyPincher365</span>
         </Link>
-        <h1 className="text-lg font-bold">PennyPincher</h1>
+        <h1 className="text-lg font-bold">PennyPincher365</h1>
         {navLinks.map(({ href, label }) => (
           <Link
             key={href}
@@ -65,8 +66,8 @@ export function Header() {
               href="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <Package2 className="h-6 w-6 text-primary" />
-              <span className="sr-only">PennyPincher</span>
+              <PiggyBank className="h-6 w-6 text-primary" />
+              <span className="sr-only">PennyPincher365</span>
             </Link>
             {navLinks.map(({ href, label, icon: Icon }) => (
                 <Link key={href} href={href} className="flex items-center gap-3 rounded-lg px-3 py-2 text-muted-foreground transition-all hover:text-primary">
@@ -96,7 +97,7 @@ export function Header() {
                     </Link>
                 </DropdownMenuItem>
                 <DropdownMenuItem>
-                    <a href="mailto:support@pennypincher.app" className="flex items-center gap-2 cursor-pointer">
+                    <a href="mailto:info@microtech365.com" className="flex items-center gap-2 cursor-pointer">
                         <LifeBuoy className="h-4 w-4" />
                         <span>Support</span>
                     </a>

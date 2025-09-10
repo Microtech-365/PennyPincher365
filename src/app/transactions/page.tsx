@@ -1,6 +1,6 @@
 'use client'
 
-import { categories, transactions } from "@/lib/data";
+import { categories } from "@/lib/data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
@@ -19,9 +19,11 @@ import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuIte
 import { TransactionSheet } from "@/components/transactions/transaction-sheet";
 import React from "react";
 import { DeleteTransactionDialog } from "@/components/transactions/delete-transaction-dialog";
+import { useUser } from "@/context/user-context";
 
 export default function TransactionsPage() {
-    const [sortedTransactions, setSortedTransactions] = React.useState([...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    const { transactions, addTransaction, updateTransaction, deleteTransaction } = useUser();
+    const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     const categoryMap = new Map(categories.map(c => [c.id, c]));
 
     const [isSheetOpen, setIsSheetOpen] = React.useState(false);
@@ -49,7 +51,7 @@ export default function TransactionsPage() {
 
     const confirmDelete = () => {
         if (!selectedTransaction) return;
-        setSortedTransactions(prev => prev.filter(t => t.id !== selectedTransaction.id));
+        deleteTransaction(selectedTransaction.id);
         setIsDeleteDialogOpen(false);
         setSelectedTransaction(null);
     };
@@ -57,19 +59,9 @@ export default function TransactionsPage() {
 
     const handleFormSubmit = (data: Omit<Transaction, 'id'>) => {
       if (isEditMode && selectedTransaction) {
-        // Update existing transaction
-        setSortedTransactions(prev =>
-          prev.map(t =>
-            t.id === selectedTransaction.id ? { ...t, ...data } : t
-          )
-        );
+        updateTransaction({ ...selectedTransaction, ...data });
       } else {
-        // Add new transaction
-        const newTransaction: Transaction = {
-          id: (sortedTransactions.length + 1).toString(),
-          ...data,
-        };
-        setSortedTransactions(prev => [newTransaction, ...prev]);
+        addTransaction(data);
       }
       setIsSheetOpen(false);
       setSelectedTransaction(null);

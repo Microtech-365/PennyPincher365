@@ -15,3 +15,8 @@ export type Budget = {
   categoryId: string;
   amount: number;
 };
+
+export type User = {
+  name: string;
+  email: string;
+};

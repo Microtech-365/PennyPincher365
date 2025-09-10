@@ -1,11 +1,13 @@
+'use client';
 
-import { categories, transactions, budgets } from "@/lib/data";
+import { categories } from "@/lib/data";
 import { OverviewCard } from "@/components/dashboard/overview-card";
 import { DollarSign, Wallet } from "lucide-react";
 import { BudgetStatusChart } from "@/components/dashboard/budget-status-chart";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import { AIInsights } from "@/components/dashboard/ai-insights";
 import { CategorySpendingChart } from "@/components/dashboard/category-spending-chart";
+import { useUser } from "@/context/user-context";
 
 const CHART_COLORS = [
     "hsl(var(--chart-1))",
@@ -17,6 +19,8 @@ const CHART_COLORS = [
 ];
 
 export default function Home() {
+  const { transactions, budgets } = useUser();
+
   const totalSpending = transactions.reduce((acc, t) => acc + t.amount, 0);
   const totalBudget = budgets.reduce((acc, b) => acc + b.amount, 0);
 
@@ -73,7 +77,7 @@ export default function Home() {
           <OverviewCard
               title="Monthly Budget"
               value={`$${totalBudget.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
-              description={`${totalSpending > 0 ? ((totalSpending / totalBudget) * 100).toFixed(0) : 0}% of budget used`}
+              description={`${totalBudget > 0 && totalSpending > 0 ? ((totalSpending / totalBudget) * 100).toFixed(0) : 0}% of budget used`}
               icon={<Wallet className="h-4 w-4 text-purple-200" />}
               className="bg-purple-950 text-white"
           />
