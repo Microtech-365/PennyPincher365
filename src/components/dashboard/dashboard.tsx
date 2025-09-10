@@ -7,9 +7,7 @@ import { BudgetStatusChart } from "@/components/dashboard/budget-status-chart";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import { CategorySpendingChart } from "@/components/dashboard/category-spending-chart";
 import { useUser } from "@/context/user-context";
-import React, { Suspense } from 'react';
-import { AIInsights } from './ai-insights';
-import { Skeleton } from '../ui/skeleton';
+import React, { ReactNode } from 'react';
 
 const CHART_COLORS = [
     "hsl(var(--chart-1))",
@@ -20,7 +18,11 @@ const CHART_COLORS = [
     "hsl(var(--primary))",
 ];
 
-export function Dashboard() {
+type DashboardProps = {
+    children: (spendingData: Record<string, number>, budgetGoals: Record<string, number>) => ReactNode;
+}
+
+export function Dashboard({ children }: DashboardProps) {
   const { transactions, budgets } = useUser();
 
   const totalSpending = transactions.reduce((acc, t) => acc + t.amount, 0);
@@ -95,9 +97,7 @@ export function Dashboard() {
            <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
         </div>
          <div className="col-span-3">
-            <Suspense fallback={<Skeleton className="h-[430px]" />}>
-             <AIInsights spendingData={spendingDataForAI} budgetGoals={budgetGoalsForAI} />
-            </Suspense>
+            {children(spendingDataForAI, budgetGoalsForAI)}
         </div>
       </div>
     </div>
