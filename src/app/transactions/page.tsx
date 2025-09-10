@@ -104,7 +104,7 @@ export default function TransactionsPage() {
                         <TableBody>
                             {sortedTransactions.map((transaction) => {
                             const category = categoryMap.get(transaction.categoryId);
-                            const categoryName = category?.name ?? 'Uncategorized';
+                            const categoryName = category ? category.name : 'Uncategorized';
                             return (
                                 <TableRow key={transaction.id}>
                                 <TableCell className="font-medium">{transaction.description}</TableCell>

@@ -95,13 +95,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     if (!user) return;
     const newTransactions = transactions.filter(t => t.id !== id);
     setTransactions(newTransactions);
-    // Also delete any associated budgets
-    const newBudgets = budgets.filter(b => {
-      const txn = transactions.find(t => t.id === id);
-      return !txn || b.categoryId !== txn.categoryId;
-    });
-
-    saveUserData(user.email, newTransactions, newBudgets, categories);
+    saveUserData(user.email, newTransactions, budgets, categories);
   };
 
   const updateBudgets = (newBudgets: Budget[]) => {
