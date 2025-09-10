@@ -22,7 +22,7 @@ export function BudgetStatusChart({ data }: BudgetStatusChartProps) {
     },
     budget: {
       label: "Budget",
-      color: "hsl(var(--primary))",
+      color: "#800080",
     },
   };
   
