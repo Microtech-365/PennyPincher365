@@ -75,6 +75,12 @@ export default function TransactionsPage() {
       setSelectedTransaction(null);
     };
 
+    const formatDate = (dateString: string) => {
+        const date = new Date(dateString);
+        const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+        return utcDate.toLocaleDateString();
+    };
+
 
     return (
         <main className="flex-1 space-y-4 p-8 pt-6">
@@ -116,7 +122,7 @@ export default function TransactionsPage() {
                                     <span>{category?.name || 'Uncategorized'}</span>
                                     </Badge>
                                 </TableCell>
-                                <TableCell className="hidden md:table-cell">{new Date(transaction.date).toLocaleDateString()}</TableCell>
+                                <TableCell className="hidden md:table-cell">{formatDate(transaction.date)}</TableCell>
                                 <TableCell className="text-right">
                                     ${transaction.amount.toFixed(2)}
                                 </TableCell>

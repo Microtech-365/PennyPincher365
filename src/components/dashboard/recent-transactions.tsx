@@ -73,6 +73,14 @@ export function RecentTransactions({ transactions: initialTransactions, categori
     setSelectedTransaction(null);
   };
 
+  const formatDate = (dateString: string) => {
+    //
+    const date = new Date(dateString);
+    const utcDate = new Date(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+    return utcDate.toLocaleDateString();
+  };
+
+
   return (
     <Card>
       <CardHeader className="flex flex-row items-center justify-between">
@@ -113,7 +121,7 @@ export function RecentTransactions({ transactions: initialTransactions, categori
                       <span>{category?.name || 'Uncategorized'}</span>
                     </Badge>
                   </TableCell>
-                  <TableCell className="hidden md:table-cell">{new Date(transaction.date).toLocaleDateString()}</TableCell>
+                  <TableCell className="hidden md:table-cell">{formatDate(transaction.date)}</TableCell>
                   <TableCell className="text-right">
                     ${transaction.amount.toFixed(2)}
                   </TableCell>
