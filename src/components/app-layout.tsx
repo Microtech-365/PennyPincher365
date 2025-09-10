@@ -21,15 +21,16 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                     <SidebarMenu>
                         {navLinks.map(({ href, label, icon }) => (
                             <SidebarMenuItem key={href}>
-                                <Link href={href} legacyBehavior passHref>
-                                    <SidebarMenuButton
-                                        isActive={pathname === href}
-                                        icon={icon}
-                                        tooltip={label}
-                                    >
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname === href}
+                                    icon={icon}
+                                    tooltip={label}
+                                >
+                                    <Link href={href}>
                                         {label}
-                                    </SidebarMenuButton>
-                                </Link>
+                                    </Link>
+                                </SidebarMenuButton>
                             </SidebarMenuItem>
                         ))}
                     </SidebarMenu>
