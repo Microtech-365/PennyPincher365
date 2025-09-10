@@ -19,7 +19,7 @@ const CHART_COLORS = [
 ];
 
 type DashboardProps = {
-    children: (spendingData: Record<string, number>, budgetGoals: Record<string, number>) => ReactNode;
+    children: ReactNode;
 }
 
 export function Dashboard({ children }: DashboardProps) {
@@ -49,21 +49,7 @@ export function Dashboard({ children }: DashboardProps) {
       fill: CHART_COLORS[index % CHART_COLORS.length],
     }));
 
-  const spendingDataForAI = spendingPerCategory.reduce((acc, item) => {
-    acc[item.name] = item.spent;
-    return acc;
-  }, {} as Record<string, number>);
-
-  const budgetGoalsForAI = budgets.reduce((acc, item) => {
-    const categoryName = categories.find(c => c.id === item.categoryId)?.name;
-    if (categoryName) {
-      acc[categoryName] = item.amount;
-    }
-    return acc;
-  }, {} as Record<string, number>);
-
   const recentTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
-
 
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
@@ -97,7 +83,7 @@ export function Dashboard({ children }: DashboardProps) {
            <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
         </div>
          <div className="col-span-3">
-            {children(spendingDataForAI, budgetGoalsForAI)}
+            {children}
         </div>
       </div>
     </div>
