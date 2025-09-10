@@ -100,9 +100,7 @@ export function Dashboard({ children }: DashboardProps) {
            <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
         </div>
          <div className="col-span-3">
-            <Suspense fallback={<Skeleton className="h-[430px]" />}>
-              <AIInsights spendingData={spendingDataForAI} budgetGoals={budgetGoalsForAI} />
-            </Suspense>
+            {React.cloneElement(children as React.ReactElement, { spendingData: spendingDataForAI, budgetGoals: budgetGoalsForAI })}
         </div>
       </div>
     </div>
