@@ -3,6 +3,7 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import type { User, Transaction, Budget, Category } from '@/lib/types';
 import { categories as defaultCategories } from '@/lib/data';
+import { sendWelcomeEmail } from '@/ai/flows/send-welcome-email';
 
 type AuthResult = {
   success: boolean;
@@ -12,7 +13,7 @@ type AuthResult = {
 type UserContextType = {
   user: User | null;
   login: (email: string, password: string) => AuthResult;
-  signup: (userData: Omit<User, 'id'>) => AuthResult;
+  signup: (userData: Omit<User, 'id'>) => Promise<AuthResult>;
   updateUser: (userData: User) => void;
   logout: () => void;
   transactions: Transaction[];
@@ -68,7 +69,7 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
       localStorage.setItem(`categories_${email}`, JSON.stringify(categories));
   };
   
-  const signup = (userData: Omit<User, 'id'>): AuthResult => {
+  const signup = async (userData: Omit<User, 'id'>): Promise<AuthResult> => {
     if (allUsers.find(u => u.email === userData.email)) {
       return { success: false, error: 'An account with this email already exists.' };
     }
@@ -80,6 +81,10 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('all_users', JSON.stringify(newAllUsers));
     localStorage.setItem('user', JSON.stringify(newUser));
     loadUserData(newUser.email);
+
+    // Send welcome email without waiting for it to complete
+    sendWelcomeEmail({ name: newUser.name, email: newUser.email });
+
     return { success: true };
   };
   

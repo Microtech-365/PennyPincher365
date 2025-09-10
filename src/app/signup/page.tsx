@@ -26,11 +26,13 @@ export default function SignupPage() {
     const [lastName, setLastName] = React.useState('');
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
+    const [isLoading, setIsLoading] = React.useState(false);
 
-    const handleSignup = (e: React.FormEvent) => {
+    const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
+        setIsLoading(true);
         const name = `${firstName} ${lastName}`;
-        const result = signup({ name, email, password });
+        const result = await signup({ name, email, password });
 
         if(result.success) {
             router.push('/');
@@ -41,6 +43,7 @@ export default function SignupPage() {
                 variant: "destructive",
             });
         }
+        setIsLoading(false);
     }
 
   return (
@@ -85,8 +88,8 @@ export default function SignupPage() {
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">
-          <Button type="submit" className="w-full">
-            Create an account
+          <Button type="submit" className="w-full" disabled={isLoading}>
+            {isLoading ? 'Creating Account...' : 'Create an account'}
           </Button>
           <div className="mt-4 text-center text-sm">
             Already have an account?{" "}
