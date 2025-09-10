@@ -1,3 +1,22 @@
 {
-  "placeholderImages": []
+  "placeholderImages": [
+    {
+      "id": "dashboard-screenshot",
+      "description": "A screenshot of the main dashboard showing charts and overview cards.",
+      "imageUrl": "https://picsum.photos/seed/dashboard/1280/800",
+      "imageHint": "dashboard analytics"
+    },
+    {
+      "id": "transactions-screenshot",
+      "description": "A screenshot of the transactions page with a list of recent transactions.",
+      "imageUrl": "https://picsum.photos/seed/transactions/1280/800",
+      "imageHint": "transactions list"
+    },
+    {
+      "id": "budgets-screenshot",
+      "description": "A screenshot of the budgets page where users can set their monthly budgets.",
+      "imageUrl": "https://picsum.photos/seed/budgets/1280/800",
+      "imageHint": "budgeting tool"
+    }
+  ]
 }
