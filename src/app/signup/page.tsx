@@ -52,8 +52,8 @@ export default function SignupPage() {
         <img
             src="/dashboard.png"
             alt="PennyPincher365 Dashboard"
-            width={1280}
-            height={800}
+            width="1280"
+            height="800"
             className="w-full max-w-2xl h-auto rounded-lg shadow-2xl object-cover"
             data-ai-hint="dashboard analytics"
         />
