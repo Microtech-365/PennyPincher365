@@ -16,6 +16,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useUser } from "@/context/user-context";
 import { useToast } from "@/hooks/use-toast";
+import { CircleDollarSign } from "lucide-react";
 
 export default function LoginPage() {
     const router = useRouter();
@@ -43,11 +44,15 @@ export default function LoginPage() {
     <div className="flex items-center justify-center min-h-screen bg-background">
       <Card className="w-full max-w-sm">
         <form onSubmit={handleLogin}>
-            <CardHeader>
-            <CardTitle className="text-2xl">Login</CardTitle>
-            <CardDescription>
-                Enter your email below to login to your account.
-            </CardDescription>
+            <CardHeader className="text-center">
+                <div className="flex items-center justify-center gap-2 mb-4">
+                    <CircleDollarSign className="h-8 w-8 text-primary" />
+                    <h1 className="text-2xl font-bold">PennyPincher365</h1>
+                </div>
+                <CardTitle className="text-2xl">Login</CardTitle>
+                <CardDescription>
+                    Enter your email below to login to your account.
+                </CardDescription>
             </CardHeader>
             <CardContent className="grid gap-4">
             <div className="grid gap-2">
