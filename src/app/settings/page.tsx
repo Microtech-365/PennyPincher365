@@ -7,9 +7,11 @@ import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
 import { useUser } from "@/context/user-context";
 import { useState, useEffect } from "react";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SettingsPage() {
-    const { user, login } = useUser();
+    const { user, updateUser } = useUser();
+    const { toast } = useToast();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
 
@@ -22,8 +24,11 @@ export default function SettingsPage() {
 
     const handleSave = () => {
         if (user) {
-            login({ ...user, name, email });
-            // In a real app, you'd show a success toast here
+            updateUser({ ...user, name, email });
+            toast({
+                title: "Profile Updated",
+                description: "Your changes have been saved."
+            })
         }
     }
 
@@ -54,7 +59,7 @@ export default function SettingsPage() {
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="email">Email</Label>
-                            <Input id="email" type="email" value={email} onChange={(e) => setEmail(e.target.value)} />
+                            <Input id="email" type="email" value={email} readOnly disabled />
                         </div>
                         <Button onClick={handleSave}>Save Changes</Button>
                     </CardContent>

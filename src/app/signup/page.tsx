@@ -15,20 +15,31 @@ import Link from "next/link"
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useUser } from "@/context/user-context";
+import { useToast } from "@/hooks/use-toast";
 
 export default function SignupPage() {
     const router = useRouter();
-    const { login } = useUser();
+    const { signup } = useUser();
+    const { toast } = useToast();
     const [firstName, setFirstName] = React.useState('');
     const [lastName, setLastName] = React.useState('');
     const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real app, you'd handle registration here
         const name = `${firstName} ${lastName}`;
-        login({ name, email });
-        router.push('/');
+        const result = signup({ name, email, password });
+
+        if(result.success) {
+            router.push('/');
+        } else {
+            toast({
+                title: "Sign-up Failed",
+                description: result.error,
+                variant: "destructive",
+            });
+        }
     }
 
   return (
@@ -65,7 +76,7 @@ export default function SignupPage() {
           </div>
           <div className="grid gap-2">
             <Label htmlFor="password">Password</Label>
-            <Input id="password" type="password" />
+            <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
           </div>
         </CardContent>
         <CardFooter className="flex flex-col gap-4">

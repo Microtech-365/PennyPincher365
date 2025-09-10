@@ -15,19 +15,28 @@ import Link from "next/link"
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useUser } from "@/context/user-context";
+import { useToast } from "@/hooks/use-toast";
 
 export default function LoginPage() {
     const router = useRouter();
     const { login } = useUser();
+    const { toast } = useToast();
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real app, you'd handle authentication here
-        // For now, we'll just log in with the email.
-        login({ email, name: email.split('@')[0] });
-        router.push('/');
+        const result = login(email, password);
+
+        if (result.success) {
+            router.push('/');
+        } else {
+            toast({
+                title: "Login Failed",
+                description: result.error,
+                variant: "destructive",
+            });
+        }
     }
 
   return (
