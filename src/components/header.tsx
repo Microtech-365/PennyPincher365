@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CircleUser, Menu, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn, PiggyBank } from 'lucide-react';
+import { CircleUser, Menu, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn, PiggyBank, CircleDollarSign } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -39,7 +39,7 @@ export function Header() {
           href="/"
           className="flex items-center gap-2 text-lg font-semibold md:text-base"
         >
-          <PiggyBank className="h-6 w-6 text-primary" />
+          <CircleDollarSign className="h-6 w-6 text-primary" />
           <span className="sr-only">PennyPincher365</span>
         </Link>
         <h1 className="text-lg font-bold">PennyPincher365</h1>
@@ -66,7 +66,7 @@ export function Header() {
               href="/"
               className="flex items-center gap-2 text-lg font-semibold"
             >
-              <PiggyBank className="h-6 w-6 text-primary" />
+              <CircleDollarSign className="h-6 w-6 text-primary" />
               <span className="sr-only">PennyPincher365</span>
             </Link>
             {navLinks.map(({ href, label, icon: Icon }) => (
