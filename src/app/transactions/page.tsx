@@ -104,13 +104,14 @@ export default function TransactionsPage() {
                         <TableBody>
                             {sortedTransactions.map((transaction) => {
                             const category = categoryMap.get(transaction.categoryId);
+                            const categoryName = category?.name || 'Uncategorized';
                             return (
                                 <TableRow key={transaction.id}>
                                 <TableCell className="font-medium">{transaction.description}</TableCell>
                                 <TableCell className="hidden sm:table-cell">
                                     <Badge variant="outline" className="flex items-center gap-2 max-w-min">
-                                    {category && <CategoryIcon name={category.name} className="h-4 w-4" />}
-                                    <span>{category?.name || 'Uncategorized'}</span>
+                                    <CategoryIcon name={categoryName} className="h-4 w-4" />
+                                    <span>{categoryName}</span>
                                     </Badge>
                                 </TableCell>
                                 <TableCell className="hidden md:table-cell">{formatDate(transaction.date)}</TableCell>
