@@ -5,9 +5,11 @@ import { OverviewCard } from "@/components/dashboard/overview-card";
 import { DollarSign, Wallet } from "lucide-react";
 import { BudgetStatusChart } from "@/components/dashboard/budget-status-chart";
 import { RecentTransactions } from "@/components/dashboard/recent-transactions";
-import { AIInsights } from "@/components/dashboard/ai-insights";
 import { CategorySpendingChart } from "@/components/dashboard/category-spending-chart";
 import { useUser } from "@/context/user-context";
+import React, { Suspense } from 'react';
+import { AIInsights } from './ai-insights';
+import { Skeleton } from '../ui/skeleton';
 
 const CHART_COLORS = [
     "hsl(var(--chart-1))",
@@ -93,7 +95,9 @@ export function Dashboard() {
            <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
         </div>
          <div className="col-span-3">
+            <Suspense fallback={<Skeleton className="h-[430px]" />}>
              <AIInsights spendingData={spendingDataForAI} budgetGoals={budgetGoalsForAI} />
+            </Suspense>
         </div>
       </div>
     </div>
