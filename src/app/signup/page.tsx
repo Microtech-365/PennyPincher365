@@ -52,8 +52,7 @@ export default function SignupPage() {
         className="hidden bg-background lg:block"
         style={{
           backgroundImage: `url(/dashboard.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
         }}
       ></div>

@@ -47,8 +47,7 @@ export default function LoginPage() {
         className="hidden bg-background lg:block"
         style={{
           backgroundImage: `url(/dashboard.png)`,
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
+          backgroundSize: 'contain',
           backgroundRepeat: 'no-repeat',
         }}
       ></div>
