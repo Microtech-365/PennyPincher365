@@ -1,3 +1,4 @@
+
 import { categories, transactions, budgets } from "@/lib/data";
 import { OverviewCard } from "@/components/dashboard/overview-card";
 import { DollarSign, Wallet } from "lucide-react";
@@ -72,7 +73,8 @@ export default function Home() {
               title="Monthly Budget"
               value={`$${totalBudget.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
               description={`${totalSpending > 0 ? ((totalSpending / totalBudget) * 100).toFixed(0) : 0}% of budget used`}
-              icon={<Wallet className="h-4 w-4 text-muted-foreground" />}
+              icon={<Wallet className="h-4 w-4 text-purple-200" />}
+              className="bg-purple-950 text-white"
           />
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
