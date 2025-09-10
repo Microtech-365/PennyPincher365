@@ -18,7 +18,7 @@ export function BudgetStatusChart({ data }: BudgetStatusChartProps) {
   const chartConfig = {
     spent: {
       label: "Spent",
-      color: "hsl(var(--secondary-foreground))",
+      color: "#008080",
     },
     budget: {
       label: "Budget",
