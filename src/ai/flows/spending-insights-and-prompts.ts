@@ -25,8 +25,13 @@ const SpendingInsightsOutputSchema = z.object({
 });
 export type SpendingInsightsOutput = z.infer<typeof SpendingInsightsOutputSchema>;
 
-export async function getSpendingInsightsAndPrompts(input: SpendingInsightsInput): Promise<SpendingInsightsOutput> {
-  return spendingInsightsAndPromptsFlow(input);
+export async function getSpendingInsightsAndPrompts(input: SpendingInsightsInput): Promise<SpendingInsightsOutput | null> {
+  try {
+    return await spendingInsightsAndPromptsFlow(input);
+  } catch (error) {
+    console.error("Error in spendingInsightsAndPromptsFlow:", error);
+    return null;
+  }
 }
 
 const prompt = ai.definePrompt({

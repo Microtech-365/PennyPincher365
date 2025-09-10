@@ -8,11 +8,28 @@ type AIInsightsProps = {
 };
 
 export async function AIInsights({ spendingData, budgetGoals }: AIInsightsProps) {
-  try {
-    const { insights, prompts } = await getSpendingInsightsAndPrompts({
+    const result = await getSpendingInsightsAndPrompts({
       spendingData,
       budgetGoals,
     });
+
+    if (!result) {
+      return (
+        <Card>
+          <CardHeader>
+            <CardTitle className="flex items-center gap-2">
+              <Lightbulb className="text-destructive" />
+              Insights Unavailable
+            </CardTitle>
+          </CardHeader>
+          <CardContent>
+            <p className="text-sm text-muted-foreground">Could not load AI-powered insights at this time. Please try again later.</p>
+          </CardContent>
+        </Card>
+      )
+    }
+
+    const { insights, prompts } = result;
 
     return (
       <Card>
@@ -57,20 +74,4 @@ export async function AIInsights({ spendingData, budgetGoals }: AIInsightsProps)
         </CardContent>
       </Card>
     );
-  } catch (error) {
-    console.error("Error fetching AI insights:", error);
-    return (
-      <Card>
-        <CardHeader>
-          <CardTitle className="flex items-center gap-2">
-            <Lightbulb className="text-destructive" />
-            Insights Unavailable
-          </CardTitle>
-        </CardHeader>
-        <CardContent>
-          <p className="text-sm text-muted-foreground">Could not load AI-powered insights at this time. Please try again later.</p>
-        </CardContent>
-      </Card>
-    )
-  }
 }
