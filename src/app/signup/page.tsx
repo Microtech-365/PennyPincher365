@@ -52,7 +52,7 @@ export default function SignupPage() {
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
        <div className="hidden bg-background lg:flex items-center justify-center p-8">
         <Image
-            src="https://picsum.photos/seed/dashboard/1280/800"
+            src="/dashboard.png"
             alt="PennyPincher365 Dashboard"
             width={1280}
             height={800}
