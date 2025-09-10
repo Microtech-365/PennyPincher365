@@ -71,14 +71,18 @@ export function Header() {
                     <span>Settings</span>
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                <LifeBuoy className="h-4 w-4" />
-                <span>Support</span>
+            <DropdownMenuItem asChild>
+                <a href="mailto:support@pennypincher.app" className="flex items-center gap-2 cursor-pointer">
+                    <LifeBuoy className="h-4 w-4" />
+                    <span>Support</span>
+                </a>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem className="flex items-center gap-2 cursor-pointer">
-                <LogOut className="h-4 w-4" />
-                <span>Logout</span>
+            <DropdownMenuItem asChild>
+                <Link href="/" className="flex items-center gap-2 cursor-pointer">
+                    <LogOut className="h-4 w-4" />
+                    <span>Logout</span>
+                </Link>
             </DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>
