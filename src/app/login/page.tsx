@@ -14,13 +14,19 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useUser } from "@/context/user-context";
 
 export default function LoginPage() {
     const router = useRouter();
+    const { login } = useUser();
+    const [email, setEmail] = React.useState('');
+    const [password, setPassword] = React.useState('');
 
     const handleLogin = (e: React.FormEvent) => {
         e.preventDefault();
         // In a real app, you'd handle authentication here
+        // For now, we'll just log in with the email.
+        login({ email, name: email.split('@')[0] });
         router.push('/');
     }
 
@@ -37,11 +43,11 @@ export default function LoginPage() {
             <CardContent className="grid gap-4">
             <div className="grid gap-2">
                 <Label htmlFor="email">Email</Label>
-                <Input id="email" type="email" placeholder="m@example.com" required />
+                <Input id="email" type="email" placeholder="m@example.com" required value={email} onChange={(e) => setEmail(e.target.value)} />
             </div>
             <div className="grid gap-2">
                 <Label htmlFor="password">Password</Label>
-                <Input id="password" type="password" required />
+                <Input id="password" type="password" required value={password} onChange={(e) => setPassword(e.target.value)} />
             </div>
             </CardContent>
             <CardFooter className="flex flex-col gap-4">

@@ -14,13 +14,20 @@ import { Label } from "@/components/ui/label"
 import Link from "next/link"
 import { useRouter } from "next/navigation";
 import React from "react";
+import { useUser } from "@/context/user-context";
 
 export default function SignupPage() {
     const router = useRouter();
+    const { login } = useUser();
+    const [firstName, setFirstName] = React.useState('');
+    const [lastName, setLastName] = React.useState('');
+    const [email, setEmail] = React.useState('');
 
     const handleSignup = (e: React.FormEvent) => {
         e.preventDefault();
         // In a real app, you'd handle registration here
+        const name = `${firstName} ${lastName}`;
+        login({ name, email });
         router.push('/');
     }
 
@@ -38,11 +45,11 @@ export default function SignupPage() {
           <div className="grid grid-cols-2 gap-4">
             <div className="grid gap-2">
               <Label htmlFor="first-name">First name</Label>
-              <Input id="first-name" placeholder="Max" required />
+              <Input id="first-name" placeholder="Max" required value={firstName} onChange={(e) => setFirstName(e.target.value)} />
             </div>
             <div className="grid gap-2">
               <Label htmlFor="last-name">Last name</Label>
-              <Input id="last-name" placeholder="Robinson" required />
+              <Input id="last-name" placeholder="Robinson" required value={lastName} onChange={(e) => setLastName(e.target.value)} />
             </div>
           </div>
           <div className="grid gap-2">
@@ -52,6 +59,8 @@ export default function SignupPage() {
               type="email"
               placeholder="m@example.com"
               required
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
             />
           </div>
           <div className="grid gap-2">

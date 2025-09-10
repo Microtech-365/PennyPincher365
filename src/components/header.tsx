@@ -14,6 +14,7 @@ import {
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
 import { usePathname, useRouter } from 'next/navigation';
 import React from 'react';
+import { useUser } from '@/context/user-context';
 
 const navLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -23,10 +24,10 @@ const navLinks = [
 export function Header() {
   const pathname = usePathname();
   const router = useRouter();
-  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+  const { user, logout } = useUser();
 
   const handleLogout = () => {
-    setIsLoggedIn(false);
+    logout();
     router.push('/login');
   }
 
@@ -77,7 +78,7 @@ export function Header() {
         </SheetContent>
       </Sheet>
       <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        {isLoggedIn ? (
+        {user ? (
             <DropdownMenu>
             <DropdownMenuTrigger asChild>
                 <Button variant="secondary" size="icon" className="rounded-full">
@@ -86,7 +87,7 @@ export function Header() {
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 <DropdownMenuItem asChild>
                     <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
