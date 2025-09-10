@@ -25,12 +25,19 @@ const SpendingInsightsOutputSchema = z.object({
 });
 export type SpendingInsightsOutput = z.infer<typeof SpendingInsightsOutputSchema>;
 
-export async function getSpendingInsightsAndPrompts(input: SpendingInsightsInput): Promise<SpendingInsightsOutput | null> {
+
+export type SpendingInsightsResult = {
+  data: SpendingInsightsOutput | null;
+  error?: string;
+}
+
+export async function getSpendingInsightsAndPrompts(input: SpendingInsightsInput): Promise<SpendingInsightsResult> {
   try {
-    return await spendingInsightsAndPromptsFlow(input);
-  } catch (error) {
+    const data = await spendingInsightsAndPromptsFlow(input);
+    return { data };
+  } catch (error: any) {
     console.error("Error in spendingInsightsAndPromptsFlow:", error);
-    return null;
+    return { data: null, error: error.message };
   }
 }
 

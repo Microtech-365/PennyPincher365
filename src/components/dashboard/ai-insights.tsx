@@ -1,6 +1,6 @@
 import { getSpendingInsightsAndPrompts } from '@/ai/flows/spending-insights-and-prompts';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
-import { Lightbulb, Mic } from 'lucide-react';
+import { Lightbulb, Mic, AlertTriangle } from 'lucide-react';
 
 type AIInsightsProps = {
   spendingData: Record<string, number>;
@@ -8,28 +8,33 @@ type AIInsightsProps = {
 };
 
 export async function AIInsights({ spendingData, budgetGoals }: AIInsightsProps) {
-    const result = await getSpendingInsightsAndPrompts({
+    const { data, error } = await getSpendingInsightsAndPrompts({
       spendingData,
       budgetGoals,
     });
 
-    if (!result) {
+    if (!data || error) {
+      let errorMessage = "Could not load AI-powered insights at this time. Please try again later.";
+      if (error && error.includes("429 Too Many Requests")) {
+        errorMessage = "You've exceeded the request limit for AI insights. Please wait a moment before trying again.";
+      }
+
       return (
         <Card>
           <CardHeader>
             <CardTitle className="flex items-center gap-2">
-              <Lightbulb className="text-destructive" />
+              <AlertTriangle className="text-destructive" />
               Insights Unavailable
             </CardTitle>
           </CardHeader>
           <CardContent>
-            <p className="text-sm text-muted-foreground">Could not load AI-powered insights at this time. Please try again later.</p>
+            <p className="text-sm text-muted-foreground">{errorMessage}</p>
           </CardContent>
         </Card>
       )
     }
 
-    const { insights, prompts } = result;
+    const { insights, prompts } = data;
 
     return (
       <Card>
