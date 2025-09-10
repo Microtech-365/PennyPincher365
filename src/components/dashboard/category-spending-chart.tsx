@@ -1,8 +1,8 @@
 'use client';
 
-import { Pie, PieChart, Cell, Legend, Tooltip } from 'recharts';
+import { Pie, PieChart, Cell, Tooltip } from 'recharts';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
-import { ChartContainer, ChartTooltipContent, ChartLegendContent } from '@/components/ui/chart';
+import { ChartContainer, ChartTooltipContent, ChartLegend, ChartLegendContent } from '@/components/ui/chart';
 
 type ChartData = {
   name: string;
