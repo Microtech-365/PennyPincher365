@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CircleUser, Menu, Package2, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard } from 'lucide-react';
+import { CircleUser, Menu, Package2, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -12,7 +12,8 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
+import React from 'react';
 
 const navLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -21,6 +22,13 @@ const navLinks = [
 
 export function Header() {
   const pathname = usePathname();
+  const router = useRouter();
+  const [isLoggedIn, setIsLoggedIn] = React.useState(true);
+
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    router.push('/login');
+  }
 
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
@@ -69,37 +77,43 @@ export function Header() {
         </SheetContent>
       </Sheet>
       <div className="flex w-full items-center justify-end gap-4 md:ml-auto md:gap-2 lg:gap-4">
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button variant="secondary" size="icon" className="rounded-full">
-              <CircleUser className="h-5 w-5" />
-              <span className="sr-only">Toggle user menu</span>
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end">
-            <DropdownMenuLabel>My Account</DropdownMenuLabel>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-                <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
-                    <Settings className="h-4 w-4" />
-                    <span>Settings</span>
-                </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem>
-                <a href="mailto:support@pennypincher.app" className="flex items-center gap-2 cursor-pointer">
-                    <LifeBuoy className="h-4 w-4" />
-                    <span>Support</span>
-                </a>
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-                <Link href="/" className="flex items-center gap-2 cursor-pointer">
+        {isLoggedIn ? (
+            <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button variant="secondary" size="icon" className="rounded-full">
+                <CircleUser className="h-5 w-5" />
+                <span className="sr-only">Toggle user menu</span>
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>My Account</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem asChild>
+                    <Link href="/settings" className="flex items-center gap-2 cursor-pointer">
+                        <Settings className="h-4 w-4" />
+                        <span>Settings</span>
+                    </Link>
+                </DropdownMenuItem>
+                <DropdownMenuItem>
+                    <a href="mailto:support@pennypincher.app" className="flex items-center gap-2 cursor-pointer">
+                        <LifeBuoy className="h-4 w-4" />
+                        <span>Support</span>
+                    </a>
+                </DropdownMenuItem>
+                <DropdownMenuSeparator />
+                <DropdownMenuItem onClick={handleLogout} className="flex items-center gap-2 cursor-pointer">
                     <LogOut className="h-4 w-4" />
                     <span>Logout</span>
+                </DropdownMenuItem>
+            </DropdownMenuContent>
+            </DropdownMenu>
+        ) : (
+            <Button asChild>
+                <Link href="/login">
+                    <LogIn className="mr-2 h-4 w-4" /> Login
                 </Link>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+            </Button>
+        )}
       </div>
     </header>
   );

@@ -57,7 +57,10 @@ export default function Home() {
 
 
   return (
-    <div className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+    <div className="flex-1 space-y-4 p-8 pt-6">
+      <div className="flex items-center justify-between space-y-2">
+        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+      </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
           <OverviewCard
               title="Total Spending"
@@ -72,14 +75,18 @@ export default function Home() {
               icon={<Wallet className="h-4 w-4 text-muted-foreground" />}
           />
       </div>
-      <div className="grid gap-4 md:gap-8 lg:grid-cols-2 xl:grid-cols-3">
-        <div className="grid auto-rows-max items-start gap-4 lg:col-span-2 lg:gap-8">
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+        <div className="col-span-4">
           <BudgetStatusChart data={budgetChartData} />
-          <RecentTransactions transactions={recentTransactions.slice(0,5)} categories={categories} />
         </div>
-        <div className="grid auto-rows-max items-start gap-4 lg:gap-8">
-          <AIInsights spendingData={spendingDataForAI} budgetGoals={budgetGoalsForAI} />
-          <CategorySpendingChart data={categoryChartData} />
+        <div className="col-span-3">
+           <CategorySpendingChart data={categoryChartData} />
+        </div>
+        <div className="col-span-4">
+           <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
+        </div>
+         <div className="col-span-3">
+             <AIInsights spendingData={spendingDataForAI} budgetGoals={budgetGoalsForAI} />
         </div>
       </div>
     </div>

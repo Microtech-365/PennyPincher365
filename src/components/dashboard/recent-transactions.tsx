@@ -1,3 +1,5 @@
+'use client'
+
 import {
   Card,
   CardContent,
@@ -20,6 +22,9 @@ import { Button } from '../ui/button';
 import { MoreHorizontal, ArrowRight } from 'lucide-react';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '../ui/dropdown-menu';
 import Link from 'next/link';
+import { useState } from 'react';
+import { TransactionSheet } from '../transactions/transaction-sheet';
+import { DeleteTransactionDialog } from '../transactions/delete-transaction-dialog';
 
 type RecentTransactionsProps = {
   transactions: Transaction[];
@@ -27,8 +32,46 @@ type RecentTransactionsProps = {
   showViewAll?: boolean;
 };
 
-export function RecentTransactions({ transactions, categories, showViewAll = false }: RecentTransactionsProps) {
+export function RecentTransactions({ transactions: initialTransactions, categories, showViewAll = false }: RecentTransactionsProps) {
+  const [transactions, setTransactions] = useState(initialTransactions);
+  const [isSheetOpen, setIsSheetOpen] = useState(false);
+  const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
+  const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
+  const [isEditMode, setIsEditMode] = useState(false);
+  
   const categoryMap = new Map(categories.map(c => [c.id, c]));
+
+  const handleEdit = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsEditMode(true);
+    setIsSheetOpen(true);
+  };
+
+  const handleDelete = (transaction: Transaction) => {
+    setSelectedTransaction(transaction);
+    setIsDeleteDialogOpen(true);
+  };
+  
+  const confirmDelete = () => {
+    if (!selectedTransaction) return;
+    setTransactions(prev => prev.filter(t => t.id !== selectedTransaction.id));
+    setIsDeleteDialogOpen(false);
+    setSelectedTransaction(null);
+  };
+
+  const handleFormSubmit = (data: Omit<Transaction, 'id'>) => {
+    if (isEditMode && selectedTransaction) {
+      setTransactions(prev => prev.map(t => t.id === selectedTransaction.id ? { ...t, ...data } : t));
+    } else {
+      const newTransaction: Transaction = {
+        id: (transactions.length + 1).toString(),
+        ...data
+      };
+      setTransactions(prev => [newTransaction, ...prev]);
+    }
+    setIsSheetOpen(false);
+    setSelectedTransaction(null);
+  };
 
   return (
     <Card>
@@ -83,8 +126,8 @@ export function RecentTransactions({ transactions, categories, showViewAll = fal
                         </Button>
                       </DropdownMenuTrigger>
                       <DropdownMenuContent align="end">
-                        <DropdownMenuItem>Edit</DropdownMenuItem>
-                        <DropdownMenuItem className="text-destructive">Delete</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleEdit(transaction)}>Edit</DropdownMenuItem>
+                        <DropdownMenuItem onClick={() => handleDelete(transaction)} className="text-destructive">Delete</DropdownMenuItem>
                       </DropdownMenuContent>
                     </DropdownMenu>
                   </TableCell>
@@ -94,6 +137,18 @@ export function RecentTransactions({ transactions, categories, showViewAll = fal
           </TableBody>
         </Table>
       </CardContent>
+       <TransactionSheet 
+          isOpen={isSheetOpen} 
+          setIsOpen={setIsSheetOpen}
+          isEditMode={isEditMode}
+          transaction={selectedTransaction}
+          onSubmit={handleFormSubmit}
+      />
+      <DeleteTransactionDialog 
+          isOpen={isDeleteDialogOpen}
+          setIsOpen={setIsDeleteDialogOpen}
+          onConfirm={confirmDelete}
+      />
     </Card>
   );
 }

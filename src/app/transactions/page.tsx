@@ -1,26 +1,159 @@
-import { RecentTransactions } from "@/components/dashboard/recent-transactions";
+'use client'
+
 import { categories, transactions } from "@/lib/data";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
-import { PlusCircle } from "lucide-react";
+import {
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+} from '@/components/ui/table';
+import { Badge } from '@/components/ui/badge';
+import type { Transaction, Category } from '@/lib/types';
+import { CategoryIcon } from '@/components/category-icon';
+import { Button } from '@/components/ui/button';
+import { MoreHorizontal, PlusCircle } from 'lucide-react';
+import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem } from '@/components/ui/dropdown-menu';
+import { TransactionSheet } from "@/components/transactions/transaction-sheet";
+import React from "react";
+import { DeleteTransactionDialog } from "@/components/transactions/delete-transaction-dialog";
 
 export default function TransactionsPage() {
-    const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
+    const [sortedTransactions, setSortedTransactions] = React.useState([...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime()));
+    const categoryMap = new Map(categories.map(c => [c.id, c]));
+
+    const [isSheetOpen, setIsSheetOpen] = React.useState(false);
+    const [isDeleteDialogOpen, setIsDeleteDialogOpen] = React.useState(false);
+    const [selectedTransaction, setSelectedTransaction] = React.useState<Transaction | null>(null);
+    const [isEditMode, setIsEditMode] = React.useState(false);
+
+
+    const handleAdd = () => {
+        setSelectedTransaction(null);
+        setIsEditMode(false);
+        setIsSheetOpen(true);
+    };
+
+    const handleEdit = (transaction: Transaction) => {
+        setSelectedTransaction(transaction);
+        setIsEditMode(true);
+        setIsSheetOpen(true);
+    };
+
+    const handleDelete = (transaction: Transaction) => {
+        setSelectedTransaction(transaction);
+        setIsDeleteDialogOpen(true);
+    };
+
+    const confirmDelete = () => {
+        if (!selectedTransaction) return;
+        setSortedTransactions(prev => prev.filter(t => t.id !== selectedTransaction.id));
+        setIsDeleteDialogOpen(false);
+        setSelectedTransaction(null);
+    };
+
+
+    const handleFormSubmit = (data: Omit<Transaction, 'id'>) => {
+      if (isEditMode && selectedTransaction) {
+        // Update existing transaction
+        setSortedTransactions(prev =>
+          prev.map(t =>
+            t.id === selectedTransaction.id ? { ...t, ...data } : t
+          )
+        );
+      } else {
+        // Add new transaction
+        const newTransaction: Transaction = {
+          id: (sortedTransactions.length + 1).toString(),
+          ...data,
+        };
+        setSortedTransactions(prev => [newTransaction, ...prev]);
+      }
+      setIsSheetOpen(false);
+      setSelectedTransaction(null);
+    };
+
 
     return (
-        <main className="flex flex-1 flex-col gap-4 p-4 md:gap-8 md:p-8">
+        <main className="flex-1 space-y-4 p-8 pt-6">
             <div className="flex items-center justify-between">
                 <div>
-                    <h1 className="text-2xl font-bold">Transactions</h1>
+                    <h2 className="text-3xl font-bold tracking-tight">Transactions</h2>
                     <p className="text-muted-foreground">View and manage your expenses.</p>
                 </div>
-                <Button>
+                <Button onClick={handleAdd}>
                     <PlusCircle className="mr-2 h-4 w-4" />
                     Add Transaction
                 </Button>
             </div>
-            <RecentTransactions transactions={sortedTransactions} categories={categories} />
+             <Card>
+                <CardHeader>
+                    <CardTitle>All Transactions</CardTitle>
+                    <CardDescription>A complete list of all your recorded transactions.</CardDescription>
+                </CardHeader>
+                <CardContent>
+                     <Table>
+                        <TableHeader>
+                            <TableRow>
+                            <TableHead>Description</TableHead>
+                            <TableHead className="hidden sm:table-cell">Category</TableHead>
+                            <TableHead className="hidden md:table-cell">Date</TableHead>
+                            <TableHead className="text-right">Amount</TableHead>
+                            <TableHead className="w-[50px]"><span className="sr-only">Actions</span></TableHead>
+                            </TableRow>
+                        </TableHeader>
+                        <TableBody>
+                            {sortedTransactions.map((transaction) => {
+                            const category = categoryMap.get(transaction.categoryId);
+                            return (
+                                <TableRow key={transaction.id}>
+                                <TableCell className="font-medium">{transaction.description}</TableCell>
+                                <TableCell className="hidden sm:table-cell">
+                                    <Badge variant="outline" className="flex items-center gap-2 max-w-min">
+                                    {category && <CategoryIcon name={category.name} className="h-4 w-4" />}
+                                    <span>{category?.name || 'Uncategorized'}</span>
+                                    </Badge>
+                                </TableCell>
+                                <TableCell className="hidden md:table-cell">{new Date(transaction.date).toLocaleDateString()}</TableCell>
+                                <TableCell className="text-right">
+                                    ${transaction.amount.toFixed(2)}
+                                </TableCell>
+                                <TableCell>
+                                    <DropdownMenu>
+                                    <DropdownMenuTrigger asChild>
+                                        <Button variant="ghost" size="icon" className="h-8 w-8">
+                                            <MoreHorizontal className="h-4 w-4"/>
+                                            <span className="sr-only">Actions</span>
+                                        </Button>
+                                    </DropdownMenuTrigger>
+                                    <DropdownMenuContent align="end">
+                                        <DropdownMenuItem onClick={() => handleEdit(transaction)}>Edit</DropdownMenuItem>
+                                        <DropdownMenuItem onClick={() => handleDelete(transaction)} className="text-destructive">Delete</DropdownMenuItem>
+                                    </DropdownMenuContent>
+                                    </DropdownMenu>
+                                </TableCell>
+                                </TableRow>
+                            );
+                            })}
+                        </TableBody>
+                    </Table>
+                </CardContent>
+            </Card>
+
+            <TransactionSheet
+                isOpen={isSheetOpen}
+                setIsOpen={setIsSheetOpen}
+                isEditMode={isEditMode}
+                transaction={selectedTransaction}
+                onSubmit={handleFormSubmit}
+            />
+            <DeleteTransactionDialog
+                isOpen={isDeleteDialogOpen}
+                setIsOpen={setIsDeleteDialogOpen}
+                onConfirm={confirmDelete}
+            />
         </main>
     );
 }
