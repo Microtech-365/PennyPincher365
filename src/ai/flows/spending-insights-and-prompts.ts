@@ -18,7 +18,10 @@ export type SpendingInsightsInput = z.infer<typeof SpendingInsightsInputSchema>;
 
 const SpendingInsightsOutputSchema = z.object({
   insights: z.array(z.string()).describe('Insights on spending.'),
-  prompts: z.record(z.string(), z.array(z.string())).describe('Follow-up prompts for each category.'),
+  prompts: z.array(z.object({
+    category: z.string().describe('The category for the follow-up prompts.'),
+    prompts: z.array(z.string()).describe('A list of follow-up prompts for the category.'),
+  })).describe('Follow-up prompts for each relevant category.'),
 });
 export type SpendingInsightsOutput = z.infer<typeof SpendingInsightsOutputSchema>;
 

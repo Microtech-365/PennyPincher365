@@ -37,7 +37,7 @@ export async function AIInsights({ spendingData, budgetGoals }: AIInsightsProps)
           <div>
             <h3 className="font-semibold mb-2">Suggested Actions</h3>
             <div className="space-y-2">
-              {Object.entries(prompts).map(([category, categoryPrompts]) => (
+              {prompts.map(({ category, prompts: categoryPrompts }) => (
                   categoryPrompts.length > 0 && (
                   <div key={category}>
                       <h4 className="text-sm font-medium mb-1">{category}</h4>
