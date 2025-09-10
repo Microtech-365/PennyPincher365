@@ -17,6 +17,7 @@ import React from "react";
 import { useUser } from "@/context/user-context";
 import { useToast } from "@/hooks/use-toast";
 import { CircleDollarSign } from "lucide-react";
+import Image from "next/image";
 
 export default function SignupPage() {
     const router = useRouter();
@@ -48,15 +49,13 @@ export default function SignupPage() {
 
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
-       <div
-        className="hidden bg-background lg:block"
-        style={{
-          backgroundImage: "url(/dashboard.png)",
-          backgroundSize: 'cover',
-          backgroundPosition: 'center',
-          backgroundRepeat: 'no-repeat',
-        }}
-      >
+       <div className="hidden bg-background lg:block relative">
+        <Image
+            src="/dashboard.png"
+            alt="Dashboard screenshot"
+            fill
+            className="object-cover"
+        />
       </div>
       <div className="flex items-center justify-center py-12">
         <Card className="w-full max-w-sm">
