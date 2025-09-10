@@ -16,7 +16,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
     const pathname = usePathname();
     return (
         <SidebarProvider>
-            <div className="flex min-h-screen w-full flex-col">
+            <div className="flex min-h-screen w-full flex-col bg-background">
                 <Sidebar>
                     <SidebarMenu>
                         {navLinks.map(({ href, label, icon }) => (
@@ -38,7 +38,7 @@ export function AppLayout({ children }: { children: React.ReactNode }) {
                 <div className="flex flex-col flex-1">
                     <Header />
                     <SidebarInset>
-                        {children}
+                        <div className="flex-1">{children}</div>
                     </SidebarInset>
                 </div>
             </div>
