@@ -15,9 +15,14 @@ export async function AIInsights({ spendingData, budgetGoals }: AIInsightsProps)
 
     if (!data || error) {
       let errorMessage = "Could not load AI-powered insights at this time. Please try again later.";
-      if (error && error.includes("429 Too Many Requests")) {
-        errorMessage = "You've exceeded the request limit for AI insights. Please wait a moment before trying again.";
+      if (error) {
+        if (error.includes("429 Too Many Requests")) {
+          errorMessage = "You've exceeded the request limit for AI insights. Please wait a moment before trying again.";
+        } else if (error.includes("503 Service Unavailable")) {
+            errorMessage = "The AI service is currently overloaded. Please try again in a few moments."
+        }
       }
+
 
       return (
         <Card>
