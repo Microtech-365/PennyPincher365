@@ -67,7 +67,8 @@ export default function Home() {
               title="Total Spending"
               value={`$${totalSpending.toLocaleString('en-US', { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`}
               description="Total for this month"
-              icon={<DollarSign className="h-4 w-4 text-muted-foreground" />}
+              icon={<DollarSign className="h-4 w-4 text-teal-200" />}
+              className="bg-teal-950 text-white"
           />
           <OverviewCard
               title="Monthly Budget"

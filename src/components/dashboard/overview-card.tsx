@@ -20,7 +20,7 @@ export function OverviewCard({ title, value, icon, description, className }: Ove
       <CardContent>
         <div className="text-2xl font-bold">{value}</div>
         {description && (
-          <p className={cn("text-xs", className ? "text-purple-200" : "text-muted-foreground")}>{description}</p>
+          <p className={cn("text-xs", className ? "text-gray-300" : "text-muted-foreground")}>{description}</p>
         )}
       </CardContent>
     </Card>
