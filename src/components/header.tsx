@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { CircleUser, Menu, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn, PiggyBank, CircleDollarSign } from 'lucide-react';
+import { CircleUser, Menu, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard, LogIn, PiggyBank, CircleDollarSign, List } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   DropdownMenu,
@@ -19,7 +19,8 @@ import { useUser } from '@/context/user-context';
 const navLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
     { href: "/transactions", label: "Transactions", icon: CreditCard },
-    { href: "/budgets", label: "Budgets", icon: PiggyBank }
+    { href: "/budgets", label: "Budgets", icon: PiggyBank },
+    { href: "/categories", label: "Categories", icon: List }
 ];
 
 export function Header() {

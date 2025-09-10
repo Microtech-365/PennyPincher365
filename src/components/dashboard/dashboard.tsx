@@ -1,6 +1,5 @@
 'use client';
 
-import { categories } from "@/lib/data";
 import { OverviewCard } from "@/components/dashboard/overview-card";
 import { DollarSign, Wallet } from "lucide-react";
 import { BudgetStatusChart } from "@/components/dashboard/budget-status-chart";
@@ -8,9 +7,6 @@ import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import { CategorySpendingChart } from "@/components/dashboard/category-spending-chart";
 import { useUser } from "@/context/user-context";
 import React, { ReactNode } from 'react';
-import { AIInsights } from "./ai-insights";
-import { Suspense } from "react";
-import { Skeleton } from "../ui/skeleton";
 
 const CHART_COLORS = [
     "hsl(var(--chart-1))",
@@ -26,7 +22,7 @@ type DashboardProps = {
 }
 
 export function Dashboard({ children }: DashboardProps) {
-  const { transactions, budgets } = useUser();
+  const { transactions, budgets, categories } = useUser();
 
   const totalSpending = transactions.reduce((acc, t) => acc + t.amount, 0);
   const totalBudget = budgets.reduce((acc, b) => acc + b.amount, 0);
@@ -97,7 +93,7 @@ export function Dashboard({ children }: DashboardProps) {
            <CategorySpendingChart data={categoryChartData} />
         </div>
         <div className="col-span-4">
-           <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
+           <RecentTransactions transactions={recentTransactions.slice(0,10)} showViewAll={true}/>
         </div>
          <div className="col-span-3">
             {React.cloneElement(children as React.ReactElement, { spendingData: spendingDataForAI, budgetGoals: budgetGoalsForAI })}

@@ -1,7 +1,5 @@
 'use client'
 
-import { categories } from "@/lib/data";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import {
   Table,
   TableBody,
@@ -11,7 +9,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import type { Transaction, Category } from '@/lib/types';
+import type { Transaction } from '@/lib/types';
 import { CategoryIcon } from '@/components/category-icon';
 import { Button } from '@/components/ui/button';
 import { MoreHorizontal, PlusCircle } from 'lucide-react';
@@ -20,9 +18,10 @@ import { TransactionSheet } from "@/components/transactions/transaction-sheet";
 import React from "react";
 import { DeleteTransactionDialog } from "@/components/transactions/delete-transaction-dialog";
 import { useUser } from "@/context/user-context";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function TransactionsPage() {
-    const { transactions, addTransaction, updateTransaction, deleteTransaction } = useUser();
+    const { transactions, categories, addTransaction, updateTransaction, deleteTransaction } = useUser();
     const sortedTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
     const categoryMap = new Map(categories.map(c => [c.id, c]));
 

@@ -2,7 +2,6 @@
 
 import { useState, useEffect } from 'react';
 import { useUser } from '@/context/user-context';
-import { categories } from '@/lib/data';
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
@@ -12,13 +11,18 @@ import type { Budget } from '@/lib/types';
 import { CategoryIcon } from '@/components/category-icon';
 
 export default function BudgetsPage() {
-  const { budgets, updateBudgets } = useUser();
+  const { budgets, updateBudgets, categories } = useUser();
   const [localBudgets, setLocalBudgets] = useState<Budget[]>([]);
   const { toast } = useToast();
 
   useEffect(() => {
-    setLocalBudgets(budgets);
-  }, [budgets]);
+    // Ensure there's a budget entry for every category
+    const allBudgets = categories.map(category => {
+        const existingBudget = budgets.find(b => b.categoryId === category.id);
+        return existingBudget || { categoryId: category.id, amount: 0 };
+    });
+    setLocalBudgets(allBudgets);
+  }, [budgets, categories]);
 
   const handleBudgetChange = (categoryId: string, amount: string) => {
     const newAmount = parseFloat(amount) || 0;

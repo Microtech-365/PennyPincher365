@@ -12,7 +12,7 @@ import { Calendar } from '@/components/ui/calendar';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
-import { categories } from '@/lib/data';
+import { useUser } from '@/context/user-context';
 import type { Transaction } from '@/lib/types';
 
 const formSchema = z.object({
@@ -29,6 +29,7 @@ type TransactionFormProps = {
 };
 
 export function TransactionForm({ onSubmit, isEditMode, transaction }: TransactionFormProps) {
+  const { categories } = useUser();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: isEditMode && transaction ? {

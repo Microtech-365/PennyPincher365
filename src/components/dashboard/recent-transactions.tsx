@@ -16,7 +16,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Badge } from '@/components/ui/badge';
-import type { Transaction, Category } from '@/lib/types';
+import type { Transaction } from '@/lib/types';
 import { CategoryIcon } from '@/components/category-icon';
 import { Button } from '../ui/button';
 import { MoreHorizontal, ArrowRight } from 'lucide-react';
@@ -29,13 +29,11 @@ import { useUser } from '@/context/user-context';
 
 type RecentTransactionsProps = {
   transactions: Transaction[];
-  categories: Category[];
   showViewAll?: boolean;
 };
 
-export function RecentTransactions({ transactions: initialTransactions, categories, showViewAll = false }: RecentTransactionsProps) {
-  const { addTransaction, updateTransaction, deleteTransaction } = useUser();
-  const [transactions, setTransactions] = useState(initialTransactions);
+export function RecentTransactions({ transactions: initialTransactions, showViewAll = false }: RecentTransactionsProps) {
+  const { categories, addTransaction, updateTransaction, deleteTransaction } = useUser();
   const [isSheetOpen, setIsSheetOpen] = useState(false);
   const [isDeleteDialogOpen, setIsDeleteDialogOpen] = useState(false);
   const [selectedTransaction, setSelectedTransaction] = useState<Transaction | null>(null);
