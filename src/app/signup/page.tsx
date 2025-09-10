@@ -18,7 +18,6 @@ import { useUser } from "@/context/user-context";
 import { useToast } from "@/hooks/use-toast";
 import { CircleDollarSign } from "lucide-react";
 import Image from "next/image";
-import { PlaceHolderImages } from "@/lib/placeholder-images";
 
 
 export default function SignupPage() {
@@ -30,7 +29,6 @@ export default function SignupPage() {
     const [email, setEmail] = React.useState('');
     const [password, setPassword] = React.useState('');
     const [isLoading, setIsLoading] = React.useState(false);
-    const dashboardImage = PlaceHolderImages.find(img => img.id === 'dashboard-screenshot');
 
     const handleSignup = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -53,16 +51,14 @@ export default function SignupPage() {
   return (
     <div className="w-full lg:grid lg:min-h-screen lg:grid-cols-2 xl:min-h-screen">
        <div className="hidden bg-background lg:flex items-center justify-center p-8">
-        {dashboardImage && (
-            <Image
-                src={dashboardImage.imageUrl}
-                alt={dashboardImage.description}
-                width={1280}
-                height={800}
-                className="w-full max-w-2xl h-auto rounded-lg shadow-2xl object-cover"
-                data-ai-hint={dashboardImage.imageHint}
-            />
-        )}
+        <Image
+            src="/dashboard.png"
+            alt="PennyPincher365 Dashboard"
+            width={1280}
+            height={800}
+            className="w-full max-w-2xl h-auto rounded-lg shadow-2xl object-cover"
+            data-ai-hint="dashboard analytics"
+        />
       </div>
       <div className="flex items-center justify-center py-12">
         <Card className="w-full max-w-sm">
