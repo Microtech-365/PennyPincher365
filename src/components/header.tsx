@@ -1,3 +1,5 @@
+'use client';
+
 import Link from 'next/link';
 import { CircleUser, Menu, Package2, Settings, LifeBuoy, LogOut, CreditCard, LayoutDashboard } from 'lucide-react';
 import { Button } from '@/components/ui/button';
@@ -10,6 +12,7 @@ import {
   DropdownMenuTrigger,
 } from '@/components/ui/dropdown-menu';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
+import { usePathname } from 'next/navigation';
 
 const navLinks = [
     { href: "/", label: "Dashboard", icon: LayoutDashboard },
@@ -17,6 +20,8 @@ const navLinks = [
 ];
 
 export function Header() {
+  const pathname = usePathname();
+
   return (
     <header className="sticky top-0 flex h-16 items-center gap-4 border-b bg-background px-4 md:px-6 z-50">
       <nav className="hidden flex-col gap-6 text-lg font-medium md:flex md:flex-row md:items-center md:gap-5 md:text-sm lg:gap-6">
@@ -28,6 +33,15 @@ export function Header() {
           <span className="sr-only">PennyPincher</span>
         </Link>
         <h1 className="text-lg font-bold">PennyPincher</h1>
+        {navLinks.map(({ href, label }) => (
+          <Link
+            key={href}
+            href={href}
+            className={`transition-colors hover:text-foreground ${pathname === href ? 'text-foreground' : 'text-muted-foreground'}`}
+          >
+            {label}
+          </Link>
+        ))}
       </nav>
       <Sheet>
         <SheetTrigger asChild>
@@ -71,7 +85,7 @@ export function Header() {
                     <span>Settings</span>
                 </Link>
             </DropdownMenuItem>
-            <DropdownMenuItem asChild>
+            <DropdownMenuItem>
                 <a href="mailto:support@pennypincher.app" className="flex items-center gap-2 cursor-pointer">
                     <LifeBuoy className="h-4 w-4" />
                     <span>Support</span>
