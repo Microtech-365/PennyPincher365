@@ -1,3 +1,5 @@
+'use client';
+
 import { Dashboard } from "@/components/dashboard/dashboard";
 import { AIInsights } from "@/components/dashboard/ai-insights";
 import { Suspense } from "react";
