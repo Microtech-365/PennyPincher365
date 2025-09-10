@@ -3,7 +3,6 @@
 import React, { createContext, useContext, useState, ReactNode, useEffect } from 'react';
 import type { User, Transaction, Budget, Category } from '@/lib/types';
 import { categories as defaultCategories } from '@/lib/data';
-import { sendWelcomeEmail } from '@/ai/flows/send-welcome-email';
 
 type AuthResult = {
   success: boolean;
@@ -81,9 +80,6 @@ export const UserProvider = ({ children }: { children: ReactNode }) => {
     localStorage.setItem('all_users', JSON.stringify(newAllUsers));
     localStorage.setItem('user', JSON.stringify(newUser));
     loadUserData(newUser.email);
-
-    // Send welcome email without waiting for it to complete
-    sendWelcomeEmail({ name: newUser.name, email: newUser.email });
 
     return { success: true };
   };
