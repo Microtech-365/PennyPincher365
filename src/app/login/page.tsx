@@ -46,9 +46,7 @@ export default function LoginPage() {
         <img
             src="/dashboard.png"
             alt="PennyPincher365 Dashboard"
-            width="1920"
-            height="1200"
-            className="w-1/2 h-1/2 rounded-lg shadow-2xl object-contain"
+            className="w-full h-auto rounded-lg shadow-2xl object-contain"
             data-ai-hint="dashboard analytics"
         />
       </div>
