@@ -8,6 +8,9 @@ import { RecentTransactions } from "@/components/dashboard/recent-transactions";
 import { CategorySpendingChart } from "@/components/dashboard/category-spending-chart";
 import { useUser } from "@/context/user-context";
 import React, { ReactNode } from 'react';
+import { AIInsights } from "./ai-insights";
+import { Suspense } from "react";
+import { Skeleton } from "../ui/skeleton";
 
 const CHART_COLORS = [
     "hsl(var(--chart-1))",
@@ -51,6 +54,20 @@ export function Dashboard({ children }: DashboardProps) {
 
   const recentTransactions = [...transactions].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime());
 
+  const spendingDataForAI = spendingPerCategory.reduce((acc, item) => {
+    acc[item.name] = item.spent;
+    return acc;
+  }, {} as Record<string, number>);
+
+  const budgetGoalsForAI = budgets.reduce((acc, item) => {
+    const categoryName = categories.find(c => c.id === item.categoryId)?.name;
+    if (categoryName) {
+      acc[categoryName] = item.amount;
+    }
+    return acc;
+  }, {} as Record<string, number>);
+
+
   return (
     <div className="flex-1 space-y-4 p-8 pt-6">
       <div className="flex items-center justify-between space-y-2">
@@ -83,7 +100,9 @@ export function Dashboard({ children }: DashboardProps) {
            <RecentTransactions transactions={recentTransactions.slice(0,10)} categories={categories} showViewAll={true}/>
         </div>
          <div className="col-span-3">
-            {children}
+            <Suspense fallback={<Skeleton className="h-[430px]" />}>
+              <AIInsights spendingData={spendingDataForAI} budgetGoals={budgetGoalsForAI} />
+            </Suspense>
         </div>
       </div>
     </div>
